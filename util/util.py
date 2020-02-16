@@ -57,7 +57,16 @@ def gen_passwd(len_passwd, excl_chars):
 	chars = ''.join(lc)
 
 	set_excl_chars = set(ord(i) for i in list(excl_chars))
-	passwd = "".join(choice(chars) for i in range(len_passwd) if i not in
-			set_excl_chars)
+
+	# there is a bug in the logic - in this portion
+	#passwd = "".join(choice(chars) for i in range(len_passwd) if i not in
+			#set_excl_chars)
+
+	for i in range(len_passwd):
+		tc = choice(chars)
+		if ord(tc) not in set_excl_chars:
+			passwd += tc
+		else:
+			i -= 1
 
 	return passwd
