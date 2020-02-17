@@ -11,6 +11,7 @@ from json import (load, JSONDecodeError, dumps)
 from datetime import datetime
 
 # third party lib imports
+from colorama import (Back, Fore, Style)
 
 # custom lib imports
 from util.util import (file_exists, gen_passwd)
@@ -36,7 +37,7 @@ def main():
 
 	while True:
 		choice = input(
-		"Do you wish this program to manage this password? [y/n/q/s] ")
+		"Do you wish this program to manage this password? [y/n/q/s/a] ")
 
 		if choice.lower() == 'y':
 			manage_app(json_d)
@@ -49,7 +50,7 @@ def main():
 		elif choice.lower() == 'a':
 			# create a show_all function to display the results of all the
 			# applications whose passwords are being managed by this program
-			pass
+			show_all(json_d)
 
 	print("Exiting the application")
 	return 0
@@ -152,6 +153,41 @@ def show_app(json_d):
 	else:
 		print("Applications being managed by this program : {}".format(
 			{i for i in json_d.keys()}))
+
+def show_all(json_d):
+	'''
+		@function show_all
+		@brief function to show all the current passwords of all the
+		applications currently managed by the program
+	'''
+	for key, val in json_d.items():
+		print("\n+{}+".format('-' * (len(val.get(CUR)) + 19)))
+		# Application name
+		print(Fore.BLACK + Back.GREEN, end = '')
+		print("|Application : ", end = '')
+		print(key, end = '')
+		print(' ' * (len(val.get(CUR)) + 18 - len(key) - 13), end = '')
+		print('|')
+		print(Style.RESET_ALL, end = '')
+
+		# Password
+		print(Fore.WHITE + Back.BLUE + Style.BRIGHT, end = '')
+		print("|Current password : ", end = '')
+		print(val.get(CUR), end = '')
+		print('|')
+		print(Style.RESET_ALL, end = '')
+
+		# Excluded characters
+		print(Fore.BLACK + Back.YELLOW, end = '')
+		print("|Excluded characters : ", end = '')
+		print(val.get(EXCL), end = '')
+		print(' ' * (len(val.get(CUR)) + 18 - len(val.get(EXCL)) - 21),
+				end = '')
+		print('|')
+		print(Style.RESET_ALL, end = '')
+
+		# print the delimiter
+		print("+{}+\n".format('-' * (len(val.get(CUR)) + 19)))
 
 if __name__ == '__main__':
 	'''
