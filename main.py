@@ -37,7 +37,7 @@ def main():
 
 	while True:
 		choice = input(
-		"Do you wish this program to manage this password? [y/n/q/s/a] ")
+		"Do you wish this program to manage this password? [y/n/q/s/a/af] ")
 
 		if choice.lower() == 'y':
 			manage_app(json_d)
@@ -48,9 +48,9 @@ def main():
 		elif choice.lower() == 's':
 			show_app(json_d)
 		elif choice.lower() == 'a':
-			# create a show_all function to display the results of all the
-			# applications whose passwords are being managed by this program
 			show_all(json_d)
+		elif choice.lower() == 'af':
+			show_all_fancy(json_d)
 
 	print("Exiting the application")
 	return 0
@@ -157,6 +157,18 @@ def show_app(json_d):
 def show_all(json_d):
 	'''
 		@function show_all
+		@brief function to show all the current passwords of all the
+		applications currently managed by the program
+	'''
+	print()
+	for key, val in json_d.items():
+		print("Application name : {}, Current Paasword : {}\n".format(
+			key, val.get(CUR)))
+	print()
+
+def show_all_fancy(json_d):
+	'''
+		@function show_all_fancy
 		@brief function to show all the current passwords of all the
 		applications currently managed by the program
 	'''
