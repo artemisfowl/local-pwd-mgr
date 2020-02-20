@@ -33,8 +33,6 @@ def main():
 		with open(RES_FILE) as f:
 			json_d = load(f)
 
-	#print("Configuration information loaded : {}".format(json_d))
-
 	while True:
 		choice = input(
 		"Do you wish this program to manage this password? [y/n/q/s/a/af] ")
@@ -63,10 +61,9 @@ def manage_app(json_d):
 	app_name = input("Application name : ")
 	print("Password to be managed for : {}".format(app_name))
 
-	# check for the application name in the JSON file - if the
-	# application is not present - say adding application to the list
 	if app_name in set(json_d.keys()):
 		print("found the application in the configuration file")
+
 		# if the application name is found, show the current password
 		# before asking for the changing of the password
 		print("Archiving current password for date : {}".format(
@@ -85,7 +82,14 @@ def manage_app(json_d):
 		# ask for the details now
 		napp_d = json_d.get(app_name)
 
-		len_passwd = int(input("Required length [>8] : "))
+		len_passwd = input("Required length [>8] : ")
+		if len(len_passwd) == 0:
+			len_passwd = json_d.get(app_name).get(LENP)
+		else:
+			len_passwd = int(len_passwd)
+
+		print('len_passwd type : {}'.format(type(len_passwd)))
+
 		excl_chars = input("Characters to exclude (null to reset): ")
 		if excl_chars.lower() == 'null':
 			napp_d[EXCL] = ''
